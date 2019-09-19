@@ -33,10 +33,15 @@ app.get("/", (req, res) => {
 
 app.post("/search", async (req, res) => {
   console.log("search post called..");
-  res.json(await db.search(req.body.search));
+  res.json(await db.search(req.body.search_ID));
 });
 
 app.post("/createQuery", async (req, res) => {
-  console.log("user creation");
-  res.json(await db.createUser(req.body));
+  console.log("create query");
+  res.json(await db.createQuery(req.body));
+});
+
+app.post("/newAnswer", async (req, res) => {
+  console.log("new answer insert");
+  res.json(await db.insertAnswer(req.body));
 });
