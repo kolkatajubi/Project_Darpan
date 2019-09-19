@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 
 var Schema = mongoose.Schema;
 
-var Question = new Schema({
+var Query = new Schema({
   id: String,
   url: String,
   question: String,
@@ -14,7 +14,7 @@ var Question = new Schema({
   }
 });
 
-Question.index({ question: 1 });
-Question.index({ description: 1 });
+Query.index({ question: 1 });
+Query.index({ description: 1 });
 
-module.exports = mongoose.model("Question", Question);
+module.exports = mongoose.model("Query", Query);
