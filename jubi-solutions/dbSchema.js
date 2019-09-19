@@ -8,10 +8,12 @@ var Query = new Schema({
   question: String,
   votes: Number,
   description: String,
-  answers: {
-    votes: Number,
-    answer: String
-  }
+  answers: [
+    {
+      votes: Number,
+      answer: String
+    }
+  ]
 });
 
 Query.index({ question: 1 });
