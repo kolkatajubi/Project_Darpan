@@ -16,6 +16,10 @@ app.use(
   })
 );
 
+let errorMessage = {
+  status: "",
+  errorMessage: ""
+};
 // Body Parser will parse the HTML and return it in JSON format
 app.use(bodyparser.json());
 
@@ -33,15 +37,11 @@ app.get("/", (req, res) => {
 
 app.post("/search", async (req, res) => {
   console.log("search post called..");
-  res.json(await db.search(req.body.search_ID));
-});
-
-app.post("/createQuery", async (req, res) => {
-  console.log("create query");
-  res.json(await db.createQuery(req.body));
-});
-
-app.post("/newAnswer", async (req, res) => {
-  console.log("new answer insert");
-  res.json(await db.insertAnswer(req.body));
+  try {
+    res.json(await db.searchByDescription(req.body.search));
+  } catch (e) {
+    errorMessage.status = "fail";
+    errorMessage.errorMessage = e;
+    res.json(errorMessage);
+  }
 });

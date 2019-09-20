@@ -22,8 +22,8 @@ querySchema.index({ description: 1 });
 answerSchema.index({ votes: -1 });
 answerSchema.index({ query_id: 1 });
 
-var answer = mongoose.model("answerSchema", answerSchema);
-var query = mongoose.model("querySchema", querySchema);
+var answer = mongoose.model("answers", answerSchema);
+var query = mongoose.model("querys", querySchema);
 
 module.exports = {
   answer: answer,

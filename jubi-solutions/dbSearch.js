@@ -9,45 +9,76 @@ mongoose.connect(
 );
 
 module.exports = {
-  search: search => {
-    return new Promise((resolve, reject) => {
-      var filter = {
-        query_id: search
-      };
-      User.answer.find
-        .sort({ votes: -1 })
-        .limit(5)
-        .toArray(filter, function(err, data) {
+  searchByQueryId: search_ID => {
+    try {
+      return new Promise((resolve, reject) => {
+        var filter = {
+          query_id: search_ID
+        };
+        User.answer.find
+          .sort({ votes: -1 })
+          .limit(5)
+          .toArray(filter, { query_id: 0, ans_id: 0, votes: 0 }, function(
+            err,
+            data
+          ) {
+            if (err) {
+              return reject({ status: "error", data: err });
+            }
+            console.log(filter);
+            return resolve({ status: "success", data: data });
+          });
+      });
+    } catch (err) {
+      console.log("error in Search by Query" + err);
+    }
+  },
+
+  searchByDescription: searchKey => {
+    try {
+      return new Promise((resolve, reject) => {
+        var filter = {
+          $or: [
+            { question: { $regex: searchKey } },
+            { description: { $regex: searchKey } }
+          ]
+        };
+        User.query.find(filter, {}, function(err, data) {
           if (err) {
             return reject({ status: "error", data: err });
           }
           console.log(filter);
           return resolve({ status: "success", data: data });
         });
-    });
-  },
-
-  createQuery: user => {
-    return new Promise((resolve, reject) => {
-      var newQuestion = new User.query(user);
-      newQuestion.save(function(err, data) {
-        if (err) {
-          return reject({ status: "error", data: err });
-        }
-        return resolve({ status: "success", data: data });
       });
-    });
-  },
-
-  insertAnswer: insert => {
-    return new Promise((resolve, reject) => {
-      var newAnswer = new User.answer(user);
-      newAnswer.save(function(err, data) {
-        if (err) {
-          return reject({ status: "error", data: err });
-        }
-        return resolve({ status: "success", data: data });
-      });
-    });
+    } catch (err) {
+      console.log(
+        "error in search_By_description method with Error code " + err
+      );
+    }
   }
+
+  // createQuery: user => {
+  //   return new Promise((resolve, reject) => {
+  //     var newQuestion = new User.query(user);
+  //     newQuestion.save(function(err, data) {
+  //       if (err) {
+  //         return reject({ status: "error", data: err });
+  //       }
+  //       return resolve({ status: "success", data: data });
+  //     });
+  //   });
+  // }
+
+  // insertAnswer: insert => {
+  //   return new Promise((resolve, reject) => {
+  //     var newAnswer = new User.answer(user);
+  //     newAnswer.save(function(err, data) {
+  //       if (err) {
+  //         return reject({ status: "error", data: err });
+  //       }
+  //       return resolve({ status: "success", data: data });
+  //     });
+  //   });
+  // }
 };
