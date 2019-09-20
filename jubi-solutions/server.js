@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
 app.post("/search", async (req, res) => {
   console.log("search post called..");
   try {
-    res.json(await db.searchByDescription(req.body.search));
+    res.json(await db.search_Question_ID(req.body.search));
   } catch (e) {
     errorMessage.status = "fail";
     errorMessage.errorMessage = e;

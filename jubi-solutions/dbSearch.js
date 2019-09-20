@@ -15,29 +15,28 @@ module.exports = {
         var filter = {
           query_id: search_ID
         };
-        User.answer.find
-          .sort({ votes: -1 })
-          .limit(5)
-          .toArray(filter, { query_id: 0, ans_id: 0, votes: 0 }, function(
-            err,
-            data
-          ) {
+        User.answer
+          .find(filter, { ans_id: 0, votes: 0 }, function(err, data) {
             if (err) {
               return reject({ status: "error", data: err });
             }
             console.log(filter);
             return resolve({ status: "success", data: data });
-          });
+          })
+          .sort({ votes: -1 })
+          .limit(5);
       });
     } catch (err) {
       console.log("error in Search by Query" + err);
     }
   },
 
-  searchByDescription: searchKey => {
+  search_Question_ID: searchKey => {
     try {
       return new Promise((resolve, reject) => {
         var filter = {
+          url: 0,
+          question: 0,
           $text: { $search: searchKey }
         };
         var score = { score: { $meta: "textScore" } };
