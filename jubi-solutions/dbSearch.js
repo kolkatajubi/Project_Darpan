@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var User = require("./dbSchema");
 mongoose.connect(
-  "mongodb://localhost:27017/test1",
+  "mongodb://localhost:27017/jubiSolutions",
   { useNewUrlParser: true },
   function(err) {
     if (err) console.log("Mongoose Connect Error !!");
