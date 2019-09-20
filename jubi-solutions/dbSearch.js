@@ -38,18 +38,18 @@ module.exports = {
     try {
       return new Promise((resolve, reject) => {
         var filter = {
-          $or: [
-            { question: { $regex: searchKey } },
-            { description: { $regex: searchKey } }
-          ]
+          $text: { $search: searchKey }
         };
-        User.query.find(filter, {}, function(err, data) {
-          if (err) {
-            return reject({ status: "error", data: err });
-          }
-          console.log(filter);
-          return resolve({ status: "success", data: data });
-        });
+        var score = { score: { $meta: "textScore" } };
+        User.query
+          .find(filter, score, (limit = 5), function(err, data) {
+            if (err) {
+              return reject({ status: "error", data: err });
+            }
+            console.log(filter);
+            return resolve({ status: "success", data: data });
+          })
+          .sort({ score: { $meta: "textScore" } });
       });
     } catch (err) {
       console.log(
